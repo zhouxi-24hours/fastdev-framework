@@ -15,6 +15,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -45,11 +46,10 @@ public class LogAspect {
     @Around("pointcut()")
     public Object doInvoke(ProceedingJoinPoint pjp) throws Throwable {
         long start = System.currentTimeMillis();
-        Object result = null;
-        result = pjp.proceed();
+        Object result = pjp.proceed();
         long end = System.currentTimeMillis();
         long elapsedTime = end - start;
-        printLog(pjp, result, elapsedTime);
+        printLogWithElapsedTime(pjp, result, elapsedTime);
         return result;
     }
 
@@ -61,14 +61,7 @@ public class LogAspect {
      */
     @AfterThrowing(value = "pointcut()", throwing = "ex")
     public void doServiceAfterThrowing(final JoinPoint pjp, Exception ex) {
-        try {
-            long start = System.currentTimeMillis();
-            long end = System.currentTimeMillis();
-            long elapsedTime = end - start;
-            printLog(pjp, new Object(), elapsedTime);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        printLogWithEx(pjp, new Object(), ex);
     }
 
     /**
@@ -78,26 +71,34 @@ public class LogAspect {
      * @param result      方法调用返回结果
      * @param elapsedTime 方法调用花费时间
      */
-    private void printLog(JoinPoint pjp, Object result, long elapsedTime) {
+    private void printLog(JoinPoint pjp, Object result, @Nullable Long elapsedTime, @Nullable Exception ex) {
         SystemLogStrategy strategy = getFocus(pjp);
 
         if (null != strategy) {
             strategy.setThreadId(ThreadUtils.getThreadId());
             String resultStr = JsonUtils.toJSONString(result);
             if (!StringUtils.isEmpty(resultStr) && resultStr.length() <= 100) {
-                //不超过100打印，防止数据太多
+                // 不超过100打印，防止数据太多
                 strategy.setResult(resultStr);
             }
             strategy.setElapsedTime(elapsedTime);
             strategy.setRequestIp(IpUtils.getIpAddress());
-            //skywalking的traceId
+            // skywalking 的 traceId
             strategy.setTraceId(TraceContext.traceId());
             if (strategy.isAsync()) {
-                ThreadUtils.getDefaultThreadPool().execute(() -> LOG.info(strategy.format(), strategy.args()));
+                ThreadUtils.getDefaultThreadPool().execute(() -> LOG.info(strategy.format(), strategy.args(), ex));
             } else {
-                LOG.info(strategy.format(), strategy.args());
+                LOG.info(strategy.format(), strategy.args(), ex);
             }
         }
+    }
+
+    private void printLogWithElapsedTime(JoinPoint pjp, Object result, long elapsedTime) {
+        this.printLog(pjp, result, elapsedTime, null);
+    }
+
+    private void printLogWithEx(JoinPoint pjp, Object result, Exception ex) {
+        this.printLog(pjp, result, null, ex);
     }
 
     /**
