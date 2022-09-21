@@ -14,7 +14,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  * @author zhouxi
  */
 @Configuration
-@AutoConfigureOrder(2147483647)
+@AutoConfigureOrder(Integer.MAX_VALUE)
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @ConditionalOnClass(LogAspect.class)
 @ConditionalOnMissingBean(LogAspect.class)

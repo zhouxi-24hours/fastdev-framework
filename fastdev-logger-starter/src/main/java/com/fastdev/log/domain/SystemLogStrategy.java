@@ -121,7 +121,7 @@ public class SystemLogStrategy implements Serializable {
     }
 
     public String format() {
-        return "time: {}ms,traceId: {},args: {}, result: {},ip: {},threadId: {}, class: {}, method: {} ";
+        return "time: {}ms, traceId: {}, args: {}, result: {}, ip: {}, threadId: {}, class: {}, method: {} ";
     }
 
     public Object[] args() {
