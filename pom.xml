@@ -15,7 +15,8 @@
         <module>fastdev-rate-limit-starter</module> <!-- 限流组件 -->
         <module>fastdev-ftp-starter</module> <!-- ftp client组件 -->
         <module>fastdev-rule-sql-starter</module>  <!-- 自定义sql组件 -->
-        <module>fastdev-logger-starter</module>  <!-- 打印日志组件 -->
+        <module>fastdev-logger-starter</module> <!-- 日志打印组件 -->
+        <module>fastdev-ocr-starter</module>  <!-- OCR调用SDK -->
     </modules>
 
     <properties>
