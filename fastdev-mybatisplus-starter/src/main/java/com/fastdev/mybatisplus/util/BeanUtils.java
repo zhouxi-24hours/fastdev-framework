@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 /**
  * Bean相关处理工具类
  *
- * @version v2.0
+ * @author zhouxi
  */
 public class BeanUtils {
 
