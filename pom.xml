@@ -10,13 +10,14 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>fastdev-common</module> <!-- common工具包 -->
-        <module>fastdev-exception</module>  <!-- 统一异常处理 -->
-        <module>fastdev-rate-limit-starter</module> <!-- 限流组件 -->
-        <module>fastdev-ftp-starter</module> <!-- ftp client组件 -->
-        <module>fastdev-rule-sql-starter</module>  <!-- 自定义sql组件 -->
-        <module>fastdev-logger-starter</module> <!-- 日志打印组件 -->
-        <module>fastdev-ocr-starter</module>  <!-- OCR调用SDK -->
+        <module>fastdev-common</module>
+        <module>fastdev-exception</module>
+        <module>fastdev-rate-limit-starter</module>
+        <module>fastdev-ftp-starter</module>
+        <module>fastdev-rule-sql-starter</module>
+        <module>fastdev-logger-starter</module>
+        <module>fastdev-operation-log</module>
+        <module>fastdev-mybatisplus-starter</module>
     </modules>
 
     <properties>
@@ -35,6 +36,9 @@
         <aspectjweaver.version>1.9.9.1</aspectjweaver.version>
         <redisson-spring-data.version>3.17.6</redisson-spring-data.version>
         <redisson-version>3.17.6</redisson-version>
+        <mysql.connector.java-version>8.0.26</mysql.connector.java-version>
+        <spring.mybatisplus.version>3.5.2</spring.mybatisplus.version>
+        <validation-api.version>2.0.1.Final</validation-api.version>
     </properties>
 
     <dependencyManagement>
@@ -109,6 +113,24 @@
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
                 <version>${redisson-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.connector.java-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${spring.mybatisplus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${validation-api.version}</version>
             </dependency>
 
         </dependencies>
